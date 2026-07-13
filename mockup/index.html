@@ -1,0 +1,596 @@
+<title>CX Brief — CS 요약 아카이브</title>
+<style>
+  :root {
+    --bg: #F5F5F9;
+    --surface: #FFFFFF;
+    --surface-2: #F0F0F5;
+    --border: #E3E3EC;
+    --border-strong: #D3D3DE;
+    --ink: #1A1B22;
+    --ink-2: #565A6E;
+    --ink-3: #8B8FA3;
+    --accent: #5B4BD6;
+    --accent-ink: #FFFFFF;
+    --shadow: 0 1px 2px rgba(24,25,35,.04), 0 4px 16px rgba(24,25,35,.05);
+
+    --c-code: #7C3AED;
+    --c-data: #2563EB;
+    --c-setup: #0D9488;
+    --c-policy: #B4690E;
+    --c-account: #0E7FA8;
+    --c-open: #DC2626;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0E0F14;
+      --surface: #171921;
+      --surface-2: #1E212B;
+      --border: #292C38;
+      --border-strong: #363A48;
+      --ink: #ECEDF3;
+      --ink-2: #A4A8BB;
+      --ink-3: #6D7186;
+      --accent: #8C7DF2;
+      --accent-ink: #14121F;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+
+      --c-code: #A78BFA;
+      --c-data: #60A5FA;
+      --c-setup: #2DD4BF;
+      --c-policy: #FBBF24;
+      --c-account: #38BDF8;
+      --c-open: #F87171;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #F5F5F9; --surface: #FFFFFF; --surface-2: #F0F0F5; --border: #E3E3EC;
+    --border-strong: #D3D3DE; --ink: #1A1B22; --ink-2: #565A6E; --ink-3: #8B8FA3;
+    --accent: #5B4BD6; --accent-ink: #FFFFFF;
+    --shadow: 0 1px 2px rgba(24,25,35,.04), 0 4px 16px rgba(24,25,35,.05);
+    --c-code: #7C3AED; --c-data: #2563EB; --c-setup: #0D9488;
+    --c-policy: #B4690E; --c-account: #0E7FA8; --c-open: #DC2626;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E0F14; --surface: #171921; --surface-2: #1E212B; --border: #292C38;
+    --border-strong: #363A48; --ink: #ECEDF3; --ink-2: #A4A8BB; --ink-3: #6D7186;
+    --accent: #8C7DF2; --accent-ink: #14121F;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    --c-code: #A78BFA; --c-data: #60A5FA; --c-setup: #2DD4BF;
+    --c-policy: #FBBF24; --c-account: #38BDF8; --c-open: #F87171;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+      "Pretendard", "Malgun Gothic", "Segoe UI", "Noto Sans KR", sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono {
+    font-family: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, "Cascadia Mono",
+      Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---- Top bar ---- */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(8px);
+  }
+  .topbar-inner {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 24px; max-width: 1160px; margin: 0 auto;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 8px; flex: none;
+    background: linear-gradient(140deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #12b5a5));
+    display: grid; place-items: center;
+    color: var(--accent-ink); font-weight: 800; font-size: 14px; letter-spacing: -.03em;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+  }
+  .brand-name { font-weight: 750; font-size: 17px; letter-spacing: -.02em; }
+  .brand-sub {
+    font-size: 12px; color: var(--ink-3); margin-left: 2px;
+    padding-left: 12px; border-left: 1px solid var(--border-strong);
+  }
+  .topbar-spacer { flex: 1; }
+  .src-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; color: var(--ink-2);
+    background: var(--surface-2); border: 1px solid var(--border);
+    padding: 5px 10px; border-radius: 999px;
+  }
+  .src-badge b { color: var(--ink); font-weight: 650; }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--c-setup);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-setup) 22%, transparent);
+  }
+  .theme-btn {
+    font: inherit; font-size: 12px; color: var(--ink-2);
+    background: var(--surface-2); border: 1px solid var(--border);
+    padding: 6px 11px; border-radius: 8px; cursor: pointer;
+  }
+  .theme-btn:hover { color: var(--ink); border-color: var(--border-strong); }
+
+  /* ---- Header / stats ---- */
+  header.page { padding: 30px 0 8px; }
+  .page-title { margin: 0; font-size: 25px; letter-spacing: -.025em; font-weight: 760; text-wrap: balance; }
+  .page-desc { margin: 7px 0 0; color: var(--ink-2); font-size: 14px; max-width: 62ch; }
+
+  .stat-row {
+    display: grid; gap: 14px; margin: 24px 0 8px;
+    grid-template-columns: repeat(4, 1fr) 1.5fr;
+  }
+  .stat {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 15px 16px; box-shadow: var(--shadow);
+  }
+  .stat-label {
+    font-size: 11.5px; color: var(--ink-3); letter-spacing: .04em;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .stat-num { font-size: 27px; font-weight: 740; letter-spacing: -.03em; margin-top: 4px; line-height: 1.1; }
+  .stat-num small { font-size: 13px; font-weight: 600; color: var(--ink-3); margin-left: 3px; letter-spacing: 0; }
+  .stat-delta { font-size: 12px; margin-top: 3px; color: var(--ink-2); }
+  .stat-delta.up { color: var(--c-setup); }
+  .stat.alert .stat-num { color: var(--c-open); }
+
+  .dist { display: flex; flex-direction: column; }
+  .dist-bar {
+    display: flex; height: 12px; border-radius: 6px; overflow: hidden;
+    margin: 9px 0 11px; background: var(--surface-2);
+  }
+  .dist-bar span { display: block; height: 100%; }
+  .dist-legend { display: flex; flex-wrap: wrap; gap: 4px 13px; }
+  .dist-legend div { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-2); }
+  .dist-legend i { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
+  .dist-legend b { color: var(--ink); font-weight: 650; }
+
+  /* ---- Toolbar ---- */
+  .toolbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 14px 0; margin-top: 8px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .chips { display: flex; gap: 7px; flex-wrap: wrap; }
+  .chip-btn {
+    font: inherit; font-size: 13px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px 6px 11px; border-radius: 999px;
+    border: 1px solid var(--border-strong); background: var(--surface); color: var(--ink-2);
+    transition: background .12s, color .12s, border-color .12s;
+  }
+  .chip-btn i { width: 8px; height: 8px; border-radius: 50%; background: var(--cat, var(--ink-3)); }
+  .chip-btn .ct { font-size: 11.5px; color: var(--ink-3); }
+  .chip-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+  .chip-btn[aria-pressed="true"] {
+    background: color-mix(in srgb, var(--cat, var(--accent)) 14%, var(--surface));
+    border-color: color-mix(in srgb, var(--cat, var(--accent)) 55%, transparent);
+    color: var(--ink);
+  }
+  .chip-btn[aria-pressed="true"] .ct { color: var(--ink-2); }
+  .chip-all { --cat: var(--accent); }
+
+  .search {
+    margin-left: auto; position: relative; display: flex; align-items: center;
+  }
+  .search svg { position: absolute; left: 11px; width: 15px; height: 15px; color: var(--ink-3); pointer-events: none; }
+  .search input {
+    font: inherit; font-size: 13px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--border-strong);
+    border-radius: 9px; padding: 8px 12px 8px 32px; width: 230px;
+  }
+  .search input::placeholder { color: var(--ink-3); }
+  .search input:focus { outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset: 1px; border-color: var(--accent); }
+
+  .result-meta { font-size: 12.5px; color: var(--ink-3); padding: 12px 0 2px; }
+  .result-meta b { color: var(--ink-2); font-weight: 650; }
+
+  /* ---- Cards ---- */
+  .grid {
+    display: grid; gap: 14px; padding: 4px 0 56px;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    align-items: start;
+  }
+  .card {
+    --cat: var(--ink-3);
+    position: relative; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 13px; box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+  }
+  .card::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--cat);
+  }
+  .card[data-cat="코드수정"] { --cat: var(--c-code); }
+  .card[data-cat="데이터전달"] { --cat: var(--c-data); }
+  .card[data-cat="설정작업"] { --cat: var(--c-setup); }
+  .card[data-cat="정책안내"] { --cat: var(--c-policy); }
+  .card[data-cat="계정처리"] { --cat: var(--c-account); }
+  .card[data-cat="미해결"] { --cat: var(--c-open); }
+
+  .card-in { padding: 15px 16px 13px 18px; display: flex; flex-direction: column; gap: 11px; }
+  .card-head { display: flex; align-items: center; gap: 8px; }
+  .cat-chip {
+    font-size: 11.5px; font-weight: 650; letter-spacing: -.01em;
+    color: var(--cat);
+    background: color-mix(in srgb, var(--cat) 13%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cat) 30%, transparent);
+    padding: 2px 8px; border-radius: 6px; white-space: nowrap;
+  }
+  .card-ch { font-size: 12px; color: var(--ink-2); }
+  .card-date { margin-left: auto; font-size: 12px; color: var(--ink-3); }
+
+  .qad { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+  .qad-row { display: grid; grid-template-columns: 42px 1fr; gap: 9px; align-items: baseline; }
+  .qad-row dt {
+    font-size: 11.5px; font-weight: 650; letter-spacing: .02em;
+    color: var(--ink-3); padding-top: 1px;
+  }
+  .qad-row.solve dt { color: var(--cat); }
+  .qad-row dd { margin: 0; font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+  .qad-row.discuss dd { color: var(--ink-2); }
+  .qad-row.none dd { color: var(--ink-3); font-style: italic; }
+
+  .card-foot {
+    display: flex; align-items: center; gap: 10px;
+    border-top: 1px solid var(--border); margin: 2px -16px -13px -18px;
+    padding: 10px 16px 11px 18px;
+  }
+  .card-ts { font-size: 11px; color: var(--ink-3); }
+  .thread-link {
+    margin-left: auto; font-size: 12.5px; font-weight: 600; text-decoration: none;
+    color: var(--accent); display: inline-flex; align-items: center; gap: 4px;
+    white-space: nowrap;
+  }
+  .thread-link:hover { text-decoration: underline; }
+  .posted {
+    font-size: 11px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 5px;
+  }
+  .posted i { width: 6px; height: 6px; border-radius: 50%; background: var(--c-setup); }
+
+  .card.hidden { display: none; }
+  .empty { grid-column: 1 / -1; text-align: center; color: var(--ink-3); padding: 48px 0; font-size: 14px; }
+
+  footer.foot {
+    border-top: 1px solid var(--border); color: var(--ink-3);
+    font-size: 12px; padding: 18px 0 40px;
+  }
+  footer.foot code {
+    font-family: ui-monospace, Menlo, monospace; font-size: 11.5px;
+    background: var(--surface-2); padding: 1px 6px; border-radius: 5px; color: var(--ink-2);
+  }
+
+  @media (max-width: 860px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .stat-row .dist { grid-column: 1 / -1; }
+    .search { margin-left: 0; width: 100%; }
+    .search input { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">CX</div>
+      <div class="brand-name">CX&nbsp;Brief</div>
+      <span class="brand-sub">CS 스레드 요약 아카이브</span>
+    </div>
+    <div class="topbar-spacer"></div>
+    <span class="src-badge"><span class="live-dot"></span> <b>auto_slackbot(내부)</b> · 매시간 자동 동기화</span>
+    <button class="theme-btn" id="themeBtn" type="button">테마</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="page">
+    <h1 class="page-title">CS 처리 이력, 스레드에 묻히지 않게</h1>
+    <p class="page-desc">완료된 CS 슬랙 스레드를 <b>문의 · 논의 · 해결[유형]</b> 형식으로 자동 요약해 아카이빙합니다. 유형·채널·키워드로 걸러 "이 건 어떻게 처리했더라"를 몇 초 만에 찾으세요.</p>
+
+    <section class="stat-row" aria-label="요약 통계">
+      <div class="stat">
+        <div class="stat-label">전체 아카이브</div>
+        <div class="stat-num">128<small>건</small></div>
+        <div class="stat-delta">2026-01-01 이후</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">이번 주 완료</div>
+        <div class="stat-num">24<small>건</small></div>
+        <div class="stat-delta up">▲ 지난주 대비 +5</div>
+      </div>
+      <div class="stat alert">
+        <div class="stat-label">미해결</div>
+        <div class="stat-num">8<small>건</small></div>
+        <div class="stat-delta">추적 필요</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">슬랙 자동 게시</div>
+        <div class="stat-num">96<small>%</small></div>
+        <div class="stat-delta">123 / 128 스레드</div>
+      </div>
+      <div class="stat dist">
+        <div class="stat-label">해결 유형 분포</div>
+        <div class="dist-bar" aria-hidden="true">
+          <span style="width:26.6%;background:var(--c-code)"></span>
+          <span style="width:17.2%;background:var(--c-data)"></span>
+          <span style="width:14.8%;background:var(--c-setup)"></span>
+          <span style="width:20.3%;background:var(--c-policy)"></span>
+          <span style="width:14.8%;background:var(--c-account)"></span>
+          <span style="width:6.3%;background:var(--c-open)"></span>
+        </div>
+        <div class="dist-legend">
+          <div><i style="background:var(--c-code)"></i>코드수정 <b>34</b></div>
+          <div><i style="background:var(--c-data)"></i>데이터전달 <b>22</b></div>
+          <div><i style="background:var(--c-setup)"></i>설정작업 <b>19</b></div>
+          <div><i style="background:var(--c-policy)"></i>정책안내 <b>26</b></div>
+          <div><i style="background:var(--c-account)"></i>계정처리 <b>19</b></div>
+          <div><i style="background:var(--c-open)"></i>미해결 <b>8</b></div>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <div class="toolbar">
+    <div class="chips" id="chips">
+      <button class="chip-btn chip-all" data-cat="all" aria-pressed="true" type="button">전체 <span class="ct">128</span></button>
+      <button class="chip-btn" data-cat="코드수정" aria-pressed="false" type="button" style="--cat:var(--c-code)"><i></i>코드수정 <span class="ct">34</span></button>
+      <button class="chip-btn" data-cat="데이터전달" aria-pressed="false" type="button" style="--cat:var(--c-data)"><i></i>데이터전달 <span class="ct">22</span></button>
+      <button class="chip-btn" data-cat="설정작업" aria-pressed="false" type="button" style="--cat:var(--c-setup)"><i></i>설정작업 <span class="ct">19</span></button>
+      <button class="chip-btn" data-cat="정책안내" aria-pressed="false" type="button" style="--cat:var(--c-policy)"><i></i>정책안내 <span class="ct">26</span></button>
+      <button class="chip-btn" data-cat="계정처리" aria-pressed="false" type="button" style="--cat:var(--c-account)"><i></i>계정처리 <span class="ct">19</span></button>
+      <button class="chip-btn" data-cat="미해결" aria-pressed="false" type="button" style="--cat:var(--c-open)"><i></i>미해결 <span class="ct">8</span></button>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input id="q" type="search" placeholder="키워드 검색 (예: 환불, 쿠폰)" aria-label="요약 검색">
+    </div>
+  </div>
+
+  <div class="result-meta"><b id="count">최근 12건</b> 표시 중 · 완료 일자 최신순</div>
+
+  <main class="grid" id="grid">
+    <!-- 1 -->
+    <article class="card" data-cat="코드수정">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">코드수정</span><span class="card-ch">#edu-cs-dev</span><span class="card-date">2026-07-12</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>특정 강좌 영상 재생 시 무한 로딩, 여러 수강생 동일 증상</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>CDN 캐시 이슈 의심 → 배포 로그 확인, 인코딩 실패 파일 3개 발견</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>재인코딩 후 재배포 + 캐시 퍼지 → 정상 재생 확인</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 2 -->
+    <article class="card" data-cat="계정처리">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">계정처리</span><span class="card-ch">#edu-cs</span><span class="card-date">2026-07-12</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>가입 이메일 오타로 로그인 불가, 이메일 변경 요청</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>결제 내역 대조로 본인 확인 후 진행</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>관리자 콘솔에서 이메일 수동 변경, 재로그인 안내</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 3 -->
+    <article class="card" data-cat="데이터전달">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">데이터전달</span><span class="card-ch">#edu-data</span><span class="card-date">2026-07-11</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>마케팅팀, 6월 신규 수강생 강좌별 소요시간 데이터 요청</dd></div>
+          <div class="qad-row discuss none"><dt>논의</dt><dd>없음</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>BigQuery 추출 → CSV로 정리해 스레드에 첨부 전달</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 4 -->
+    <article class="card" data-cat="정책안내">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">정책안내</span><span class="card-ch">#edu-cs</span><span class="card-date">2026-07-11</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>수강 시작 후 환불 가능 여부·금액 문의</dd></div>
+          <div class="qad-row discuss none"><dt>논의</dt><dd>없음</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>7일 이내·진도 10% 미만 전액 환불 규정 안내, 본 건은 진도 초과로 부분 환불</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 5 -->
+    <article class="card" data-cat="미해결">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">미해결</span><span class="card-ch">#edu-cs-dev</span><span class="card-date">2026-07-10</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>특정 수강생 진도율이 실제 시청과 다르게 집계됨</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>로그 확인 중, 재현 안 됨 → 프론트/백엔드 집계 시점 차이 가능성</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>원인 파악 중, 재현 케이스 수집 위해 모니터링 추가 예정</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 6 -->
+    <article class="card" data-cat="설정작업">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">설정작업</span><span class="card-ch">#edu-ops</span><span class="card-date">2026-07-10</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>신규 B2B 고객사 전용 강좌 채널 생성 요청</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>기존 템플릿 강좌 복사 범위 확인</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>전용 채널 생성 + 강좌 3종 복사, 관리자 권한 부여 완료</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 7 -->
+    <article class="card" data-cat="계정처리">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">계정처리</span><span class="card-ch">#edu-cs</span><span class="card-date">2026-07-09</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>비밀번호 분실, 재설정 메일 미수신</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>스팸함·도메인 차단 확인 → 사내 메일 필터 이슈</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>임시 비밀번호 발급 후 수동 전달, 변경 안내</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 8 -->
+    <article class="card" data-cat="데이터전달">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">데이터전달</span><span class="card-ch">#edu-data</span><span class="card-date">2026-07-09</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>재무팀, 5월 결제·환불 내역 원장 요청</dd></div>
+          <div class="qad-row discuss none"><dt>논의</dt><dd>없음</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>결제 원장 CSV 추출·전달, 환불 컬럼 분리 정리</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 9 -->
+    <article class="card" data-cat="코드수정">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">코드수정</span><span class="card-ch">#edu-cs-dev</span><span class="card-date">2026-07-08</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>특정 쿠폰 코드가 결제 단계에서 적용 안 됨</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>쿠폰 유효기간 로직 확인 → 타임존 처리 버그(UTC/KST)</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>만료 판정 타임존 수정 배포, 해당 쿠폰 재활성화</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 10 -->
+    <article class="card" data-cat="정책안내">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">정책안내</span><span class="card-ch">#edu-cs</span><span class="card-date">2026-07-08</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>수료 인정 기준(진도율·시험) 문의</dd></div>
+          <div class="qad-row discuss none"><dt>논의</dt><dd>없음</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>진도 80% + 최종 평가 60점 이상 기준 안내, 예외 없음 확인</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 11 -->
+    <article class="card" data-cat="설정작업">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">설정작업</span><span class="card-ch">#edu-ops</span><span class="card-date">2026-07-07</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>종료된 기수 강좌를 신규 기수로 복사 요청</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>수강생 데이터 미포함 여부 확인</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>콘텐츠만 복사한 신규 기수 강좌 생성, 일정 재설정</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+    <!-- 12 -->
+    <article class="card" data-cat="미해결">
+      <div class="card-in">
+        <div class="card-head"><span class="cat-chip">미해결</span><span class="card-ch">#edu-cs-dev</span><span class="card-date">2026-07-07</span></div>
+        <dl class="qad">
+          <div class="qad-row"><dt>문의</dt><dd>모바일 앱에서 일부 강좌 썸네일 깨짐</dd></div>
+          <div class="qad-row discuss"><dt>논의</dt><dd>특정 기종·해상도에서만 재현, 원인 미확정</dd></div>
+          <div class="qad-row solve"><dt>해결</dt><dd>재현 기기 확보 어려움, 이미지 리사이즈 파이프라인 점검 백로그 등록</dd></div>
+        </dl>
+      </div>
+      <div class="card-foot">
+        <span class="posted"><i></i>스레드 게시됨</span>
+        <a class="thread-link" href="#">슬랙 스레드 →</a>
+      </div>
+    </article>
+
+    <p class="empty" id="empty" hidden>조건에 맞는 요약이 없습니다.</p>
+  </main>
+
+  <footer class="foot">
+    목업 · 실제 데이터는 <code>cxSumDailySummarizeThreads</code> 가 매시간(업무시간 9~18시) <code>auto_slackbot(내부)</code> 시트를 읽어 채웁니다. 요약 생성은 Claude, 스레드 게시는 Slack Bot Token.
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var grid = document.getElementById('grid');
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.chip-btn'));
+    var q = document.getElementById('q');
+    var count = document.getElementById('count');
+    var empty = document.getElementById('empty');
+    var activeCat = 'all';
+
+    function apply() {
+      var term = q.value.trim().toLowerCase();
+      var shown = 0;
+      cards.forEach(function (card) {
+        var catOk = activeCat === 'all' || card.getAttribute('data-cat') === activeCat;
+        var textOk = !term || card.textContent.toLowerCase().indexOf(term) !== -1;
+        var show = catOk && textOk;
+        card.classList.toggle('hidden', !show);
+        if (show) shown++;
+      });
+      empty.hidden = shown !== 0;
+      var label = activeCat === 'all' ? '' : activeCat + ' · ';
+      count.textContent = label + shown + '건';
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        activeCat = chip.getAttribute('data-cat');
+        chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+        apply();
+      });
+    });
+    q.addEventListener('input', apply);
+
+    // Theme toggle
+    var root = document.documentElement;
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) cur = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    });
+  })();
+</script>
